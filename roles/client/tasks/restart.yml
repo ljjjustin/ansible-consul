@@ -1,0 +1,5 @@
+---
+
+- name: restart consul client if config changed
+  service: name=consul-client state=restarted
+  when: consul_client_config.changed == true

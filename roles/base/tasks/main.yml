@@ -1,0 +1,24 @@
+---
+- name: get selinux status
+  shell: |
+    getenforce | grep -qi disable
+  register: selinux_disabled
+  ignore_errors: True
+
+- name: disable selinux if necessary
+  shell: |
+    setenforce 0
+    sed -i -e 's/^SELINUX=.*$/SELINUX=disabled/g' /etc/selinux/config
+  when: selinux_disabled.rc != 0
+
+- name: copy consul binary file
+  copy:
+    src: files/consul
+    dest: /usr/bin/consul
+    mode: 0555
+
+- name: ensure consul data dir
+  file:
+    path: /var/lib/consul
+    state: directory
+    mode: 0755

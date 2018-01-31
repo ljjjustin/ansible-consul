@@ -1,0 +1,6 @@
+---
+- name: Deploy client
+  hosts: clients
+  become: yes
+  roles:
+    - client

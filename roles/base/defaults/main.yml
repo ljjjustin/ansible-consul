@@ -1,0 +1,4 @@
+consul_dc_name: "dc1"
+consul_servers: "{% for n in groups['servers'] %}\"{{ n }}:8301\"{% if not loop.last %},{% endif %}{% endfor %}"
+consul_bind_addr: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+consul_key: "EXz7LFN8hpQ4id8EDYiFoQ=="

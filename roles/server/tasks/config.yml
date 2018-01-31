@@ -1,0 +1,23 @@
+---
+- name: ensure config dir
+  file:
+    path=/etc/consul.d/server
+    state=directory
+    mode=0755
+
+- name: config consul server
+  template:
+    src=server.conf.j2
+    dest=/etc/consul.d/server/config.json
+    mode=0644
+  register: consul_server_config
+
+- name: use systemd mointor consul server
+  template:
+    src=consul-server.service
+    dest=/usr/lib/systemd/system/consul-server.service
+    mode=0644
+  register: consul_server_systemd
+
+- name: enable consul server service
+  service: name=consul-server enabled=yes state=started
